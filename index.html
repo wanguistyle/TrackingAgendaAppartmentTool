@@ -62,12 +62,16 @@
     </div>
 
     <div id="main-app">
-        <h2>Tracker Appartements Paris (<span id="user-display"></span>)
-            <div>
-                <button class="btn-add" onclick="addRow()">+ Nouvel Appartement</button>
-                <button onclick="logout()" style="background: #95a5a6; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; margin-left: 10px;">Déconnexion</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0;">Tracker Appartements Paris</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="background: #ebf5ff; color: #3498db; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; border: 1px solid #d6e9f7;">
+                    <span id="user-display"></span>
+                </div>
+                <button class="btn-add" onclick="addRow()">+ Nouveau</button>
+                <button onclick="logout()" style="background: #95a5a6; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">Déconnexion</button>
             </div>
-        </h2>
+        </div>
         <table id="flatTable">
             <thead>
                 <tr>
