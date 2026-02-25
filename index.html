@@ -114,7 +114,7 @@
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><textarea oninput="autoExpand(this); saveData()" placeholder="Ex: T2 La Chapelle (ça craint)">${data ? data.nom : ''}</textarea></td>
-            <td><input type="text" oninput="saveData()" placeholder="96 rue des Poissonniers" value="${data ? data.adresse : ''}"></td>
+            <td><textarea oninput="autoExpand(this); saveData()" placeholder="96 rue des Poissonniers" value="${data ? data.adresse : ''}</textarea></td>
             <td><input type="text" oninput="saveData()" placeholder="€" value="${data ? data.loyer : ''}"></td>
             <td><input type="text" oninput="saveData()" placeholder="Lien Vers l'Annonce" value="${data ? data.lien : ''}"></td>
             <td>
@@ -172,9 +172,9 @@
             const textareas = row.querySelectorAll('textarea');
             allData.push({
                 nom: textareas[0].value,
-                adresse: inputs[0].value,
-                loyer: inputs[1].value,
-                lien: inputs[2].value,
+                adresse: textareas[1].value,
+                loyer: inputs[0].value,
+                lien: inputs[1].value,
                 note: row.querySelector('select').value,
                 statut: row.querySelector('.status-pill').innerText,
                 comm: textareas[1].value
