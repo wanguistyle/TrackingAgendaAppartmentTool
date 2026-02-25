@@ -127,7 +127,7 @@
                     <option value="1" class="grade-1">1 - Nul</option>
                 </select>
             </td>
-            <td><span class="status-pill status-not-called" onclick="toggleStatus(this); saveData()">Pas Appelés</span></td>
+            <td><span class="status-pill ${data ? (statusClasses[statuses.indexOf(data.statut)] || 'status-not-called') : 'status-not-called'}" onclick="toggleStatus(this); saveData()">${data ? data.statut : 'Pas Appelés'}</span></td>
             <td><textarea oninput="autoExpand(this); saveData()" placeholder="Commentaires">${data ? data.comm : ''}</textarea></td>
             <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove(); saveData()">Supprimer</button></td>
         `;
