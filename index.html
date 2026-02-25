@@ -114,7 +114,7 @@
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><textarea oninput="autoExpand(this); saveData()" placeholder="Ex: T2 La Chapelle (ça craint)">${data ? data.nom : ''}</textarea></td>
-            <td><textarea oninput="autoExpand(this); saveData()" placeholder="96 rue des Poissonniers" value="${data ? data.adresse : ''}</textarea></td>
+            <td><textarea oninput="autoExpand(this); saveData()" placeholder="96 rue des Poissonniers">${data ? data.adresse : ''}</textarea></td>
             <td><input type="text" oninput="saveData()" placeholder="€" value="${data ? data.loyer : ''}"></td>
             <td><input type="text" oninput="saveData()" placeholder="Lien Vers l'Annonce" value="${data ? data.lien : ''}"></td>
             <td>
