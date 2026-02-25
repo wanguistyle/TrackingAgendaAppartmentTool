@@ -62,7 +62,7 @@
     </div>
 
     <div id="main-app">
-        <h2>Tracker Appartements Paris 
+        <h2>Tracker Appartements Paris (<span id="user-display"></span>)
             <div>
                 <button class="btn-add" onclick="addRow()">+ Nouvel Appartement</button>
                 <button onclick="logout()" style="background: #95a5a6; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; margin-left: 10px;">Déconnexion</button>
@@ -185,6 +185,7 @@
         let nextIndex = (currentIndex + 1) % statuses.length;
         element.innerText = statuses[nextIndex];
         element.className = 'status-pill ' + statusClasses[nextIndex];
+        saveData()
     }
 
     function autoExpand(field) {
