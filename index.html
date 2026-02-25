@@ -6,13 +6,11 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        /* Style Écran de Connexion */
         #login-screen { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
         #login-screen h2 { margin-bottom: 20px; color: #333; }
         #login-screen input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         #login-screen button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* Style App (caché par défaut) */
         #main-app { display: none; width: 95%; max-width: 1800px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); align-self: flex-start; }
         
         h2 { color: #333; display: flex; justify-content: space-between; align-items: center; }
@@ -29,13 +27,21 @@
         .status-sent-folder { background: #d4b5de; color: #c529e9; }
         .status-accepted { background: #a4ef9c; color: #0f7d21; }
         .status-not-accepted { background: #d48080; color: #a74232; }
+        .grade-select {
+        font-weight: bold;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+            }
+        .grade-5 { background-color: #27ae60 !important; color: #ffffff !important; } 
+        .grade-4 { background-color: #a2d149 !important; color: #2d4a05 !important; } 
+        .grade-3 { background-color: #f1c40f !important; color: #4d3d02 !important; } 
+        .grade-2 { background-color: #e67e22 !important; color: #ffffff !important; } 
+        .grade-1 { background-color: #e74c3c !important; color: #ffffff !important; } 
 
-        .grade-select { font-weight: bold; padding: 8px; border-radius: 6px; width: 100%; border: 1px solid #ddd; }
-        .grade-5 { background: #90de7c; color: rgb(17, 68, 12); }
-        .grade-4 { background: #a3c86f; color: #70a00f; }
-        .grade-3 { background: #d9d679; color: #d9d020; }
-        .grade-4 { background: #dfab4c; color: #f8892e; }
-        .grade-1 { background: #db7272; color: #cc1212; }
         .delete-btn { color: #e74c3c; background: none; border: none; cursor: pointer; font-weight: bold; }
         input[type="text"] { padding: 8px; border-radius: 6px; border: 1px solid #ddd; width: 90%; }
     </style>
@@ -131,14 +137,12 @@
     }
 
     function updateGradeColor(select) {
-        select.className = "grade-select";
-        if (select.value == "5") select.classList.add('grade-5');
-        if (select.value == "4") select.classList.add('grade-4');
-        if (select.value == "3") select.classList.add('grade-3');
-        if (select.value == "2") select.classList.add('grade-2');
-        if (select.value == "1") select.classList.add('grade-1');
+    select.className = "grade-select";
+        const val = select.value;
+    if (val !== "0") {
+        select.classList.add('grade-' + val);
     }
-
+}
     function toggleStatus(element) {
         let currentIndex = statuses.indexOf(element.innerText);
         let nextIndex = (currentIndex + 1) % statuses.length;
