@@ -110,7 +110,8 @@
 
         if (USERS[u] === p) {
             currentLoggedUser = u;
-            document.getElementById('user-display').innerText = u;
+            const display = document.getElementById('user-display');
+            if(display) display.innerText = u;
             
             db.ref('users/' + u).once('value', (snapshot) => {
                 const data = snapshot.val();
