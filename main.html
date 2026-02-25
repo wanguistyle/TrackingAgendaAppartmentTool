@@ -2,29 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Table de Notation des Appartements</title>
+    <title>Tracker Appartements Paris</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; padding: 10px; margin: 0; }
-        .container { 
-            width: 95%; 
-            max-width: 1800px; /* Limite pour les très grands écrans */
-            margin: 20px auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-        }
+        .container { width: 95%; max-width: 1800px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         h2 { color: #333; display: flex; justify-content: space-between; align-items: center; }
-        
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th { text-align: left; background: #f8f9fa; padding: 12px; border-bottom: 2px solid #eee; }
         td { padding: 12px; border-bottom: 1px solid #eee; }
-        
         .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-add { background: #2ecc71; color: white; }
-        .btn-add:hover { background: #27ae60; }
-        
-        .status-pill { padding: 6px 12px; border-radius: 20px; font-size: 0.85em; cursor: pointer; display: inline-block; min-width: 100px; text-align: center; font-weight: 500; }
+        .status-pill { padding: 6px 12px; border-radius: 20px; font-size: 0.85em; cursor: pointer; display: inline-block; min-width: 120px; text-align: center; font-weight: 500; }
         .status-not-called { background: #dfe6e9; color: #636e72; }
         .status-called { background: #ffeaa7; color: #d6a000; }
         .status-written-contact { background: #81ecec; color: #008b8b; }
@@ -32,28 +20,20 @@
         .status-sent-folder { background: #d4b5de; color: #c529e9; }
         .status-accepted { background: #a4ef9c; color: #0f7d21; }
         .status-not-accepted { background: #d48080; color: #a74232; }
-
         input, select { border: 1px solid #ddd; padding: 8px; border-radius: 6px; width: 92%; outline: none; }
-        
         .grade-select { font-weight: bold; transition: all 0.3s; cursor: pointer; }
         .grade-5 { background-color: #27ae60; color: white; } 
         .grade-4 { background-color: #a4ef9c; color: #1e4620; } 
         .grade-3 { background-color: #ffeaa7; color: #856404; } 
         .grade-2 { background-color: #fab1a0; color: #721c24; }
-        .grade-1 { background-color: #db7272; color: rgb(187, 38, 38); }
+        .grade-1 { background-color: #db7272; color: white; }
         .grade-default { background-color: white; color: #333; }
-
         .delete-btn { color: #e74c3c; background: none; border: none; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h2>
-        Tracker Appartements Paris 
-        <button class="btn btn-add" onclick="addRow()">+ Nouvel Appartement</button>
-    </h2>
-
+    <h2>Tracker Appartements Paris <button class="btn btn-add" onclick="addRow()">+ Nouvel Appartement</button></h2>
     <table id="flatTable">
         <thead>
             <tr>
@@ -69,23 +49,21 @@
         <tbody id="tableBody"></tbody>
     </table>
 </div>
-
 <script>
     const statuses = ["Pas Appelés", "Appelés", "Contactés", "Visité", "Dossier Envoyé", "Acceptés", "Pas Acceptés"];
     const statusClasses = ["status-not-called", "status-called", "status-written-contact", "status-visited", "status-sent-folder", "status-accepted", "status-not-accepted"];
 
-    function addRow() {
+    function addRow(data = null) {
         const tbody = document.getElementById('tableBody');
         const row = document.createElement('tr');
-
         row.innerHTML = `
-            <td><input type="text" placeholder="Ex: T2 La Chappelle (ça craint)"></td>
-            <td><input type="text" placeholder="96 Rue des Poissonniers,750018"></td>
-            <td><input type="text" placeholder="Loyer"></td>
-            <td><input type="text" placeholder="Lien vers Annonce"></td>
+            <td><input type="text" oninput="saveData()" placeholder="Ex: T2 La Chappelle (ça craint)" value="${data ? data.nom : ''}"></td>
+            <td><input type="text" oninput="saveData()" placeholder="96 rue des Poissonniers" value="${data ? data.adresse : ''}"></td>
+            <td><input type="text" oninput="saveData()" placeholder="€" value="${data ? data.loyer : ''}"></td>
+            <td><input type="text" oninput="saveData()" placeholder="Lien Vers l'Annonce" value="${data ? data.lien : ''}"></td>
             <td>
-                <select class="grade-select grade-default" onchange="updateGradeColor(this)">
-                    <option value="0" class="grade-default">- Note -</option>
+                <select class="grade-select grade-default" onchange="updateGradeColor(this); saveData()">
+                    <option value="0">- Note -</option>
                     <option value="5" class="grade-5">5 - Top</option>
                     <option value="4" class="grade-4">4 - Bien</option>
                     <option value="3" class="grade-3">3 - Moyen</option>
@@ -93,34 +71,60 @@
                     <option value="1" class="grade-1">1 - Nul</option>
                 </select>
             </td>
-            <td>
-                <span class="status-pill status-not-called" onclick="toggleStatus(this)">Pas Appelés</span>
-            </td>
-            <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove()">Supprimer</button></td>
+            <td><span class="status-pill status-not-called" onclick="toggleStatus(this); saveData()">Pas Appelés</span></td>
+            <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove(); saveData()">Supprimer</button></td>
         `;
         tbody.prepend(row);
+        if (data) {
+            const select = row.querySelector('select');
+            select.value = data.note;
+            updateGradeColor(select);
+            const span = row.querySelector('.status-pill');
+            span.innerText = data.statut;
+            span.className = 'status-pill ' + (statusClasses[statuses.indexOf(data.statut)] || 'status-not-called');
+        }
     }
 
     function updateGradeColor(select) {
         select.className = "grade-select";
-        
         const val = select.value;
-        if (val > 0) {
-            select.classList.add('grade-' + val);
-        } else {
-            select.classList.add('grade-default');
-        }
+        if (val > 0) select.classList.add('grade-' + val);
     }
 
     function toggleStatus(element) {
         let currentIndex = statuses.indexOf(element.innerText);
         let nextIndex = (currentIndex + 1) % statuses.length;
-        
         element.innerText = statuses[nextIndex];
         element.className = 'status-pill ' + statusClasses[nextIndex];
     }
-    addRow();
-</script>
 
+    function saveData() {
+        const rows = document.querySelectorAll('#tableBody tr');
+        const allData = [];
+        rows.forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            allData.push({
+                nom: inputs[0].value,
+                adresse: inputs[1].value,
+                loyer: inputs[2].value,
+                lien: inputs[3].value,
+                note: row.querySelector('select').value,
+                statut: row.querySelector('.status-pill').innerText
+            });
+        });
+        localStorage.setItem('myApartmentsData', JSON.stringify(allData));
+    }
+
+    function loadData() {
+        const saved = localStorage.getItem('myApartmentsData');
+        if (saved) {
+            JSON.parse(saved).reverse().forEach(item => addRow(item));
+        } else {
+            addRow();
+        }
+    }
+
+    window.onload = loadData;
+</script>
 </body>
 </html>
