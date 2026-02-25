@@ -133,6 +133,9 @@
     function updateGradeColor(select) {
         select.className = "grade-select";
         if (select.value == "5") select.classList.add('grade-5');
+        if (select.value == "4") select.classList.add('grade-4');
+        if (select.value == "3") select.classList.add('grade-3');
+        if (select.value == "2") select.classList.add('grade-2');
         if (select.value == "1") select.classList.add('grade-1');
     }
 
