@@ -18,7 +18,10 @@
         th { text-align: left; background: #f8f9fa; padding: 12px; border-bottom: 2px solid #eee; }
         td { padding: 12px; border-bottom: 1px solid #eee; }
         .btn-add { background: #2ecc71; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        
+
+        input, select, textarea { border: 1px solid #ddd; padding: 8px; border-radius: 6px; width: 100%; outline: none; box-sizing: border-box; font-family: inherit; font-size: 0.95em; }
+        textarea { resize: none; overflow: hidden; min-height: 38px; line-height: 1.4; }
+
         .status-pill { padding: 6px 12px; border-radius: 20px; font-size: 0.85em; cursor: pointer; display: inline-block; min-width: 120px; text-align: center; font-weight: 500; }
         .status-not-called { background: #dfe6e9; color: #636e72; }
         .status-called { background: #ffeaa7; color: #d6a000; }
@@ -66,12 +69,13 @@
         <table id="flatTable">
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Adresse</th>
-                    <th>Loyer</th>
-                    <th>Lien</th>
-                    <th>Note</th>
-                    <th>Statut</th>
+                    <th >Nom</th>
+                    <th >Adresse</th>
+                    <th >Loyer</th>
+                    <th >Lien</th>
+                    <th >Note</th>
+                    <th >Statut</th>
+                    <th >Commentaires</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -109,7 +113,7 @@
         const tbody = document.getElementById('tableBody');
         const row = document.createElement('tr');
         row.innerHTML = `
-             <td><input type="text" oninput="saveData()" placeholder="Ex: T2 La Chappelle (ça craint)" value="${data ? data.nom : ''}"></td>
+            <td><textarea oninput="autoExpand(this); saveData()" placeholder="Ex: T2 La Chapelle (ça craint)">${data ? data.nom : ''}</textarea></td>
             <td><input type="text" oninput="saveData()" placeholder="96 rue des Poissonniers" value="${data ? data.adresse : ''}"></td>
             <td><input type="text" oninput="saveData()" placeholder="€" value="${data ? data.loyer : ''}"></td>
             <td><input type="text" oninput="saveData()" placeholder="Lien Vers l'Annonce" value="${data ? data.lien : ''}"></td>
@@ -124,9 +128,13 @@
                 </select>
             </td>
             <td><span class="status-pill status-not-called" onclick="toggleStatus(this); saveData()">Pas Appelés</span></td>
+            <td><textarea oninput="autoExpand(this); saveData()" placeholder="Commentaires">${data ? data.comm : ''}</textarea></td>
             <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove(); saveData()">Supprimer</button></td>
         `;
         tbody.prepend(row);
+        const tx = row.querySelector('textarea');
+        if(data) autoExpand(tx);
+
         if (data) {
             const select = row.querySelector('select');
             select.value = data.note;
@@ -150,15 +158,26 @@
         element.className = 'status-pill ' + statusClasses[nextIndex];
     }
 
+    function autoExpand(field) {
+        field.style.height = 'inherit';
+        const height = field.scrollHeight;
+        field.style.height = height + 'px';
+    }
+
     function saveData() {
         const rows = document.querySelectorAll('#tableBody tr');
         const allData = [];
         rows.forEach(row => {
             const inputs = row.querySelectorAll('input');
+            const textareas = row.querySelectorAll('textarea');
             allData.push({
-                nom: inputs[0].value, adresse: inputs[1].value, loyer: inputs[2].value,
-                lien: inputs[3].value, note: row.querySelector('select').value,
-                statut: row.querySelector('.status-pill').innerText
+                nom: textareas[0].value,
+                adresse: inputs[0].value,
+                loyer: inputs[1].value,
+                lien: inputs[2].value,
+                note: row.querySelector('select').value,
+                statut: row.querySelector('.status-pill').innerText,
+                comm: textareas[1].value
             });
         });
         localStorage.setItem('myApartmentsData', JSON.stringify(allData));
