@@ -98,7 +98,7 @@
             </td>
             <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove()">Supprimer</button></td>
         `;
-        tbody.appendChild(row);
+        tbody.prepend(row);
     }
 
     function updateGradeColor(select) {
@@ -119,8 +119,6 @@
         element.innerText = statuses[nextIndex];
         element.className = 'status-pill ' + statusClasses[nextIndex];
     }
-
-    // Ligne initiale
     addRow();
 </script>
 
